@@ -3,7 +3,6 @@ package dungeon;
 import org.newdawn.slick.*;
 import dungeon.level.*;
 import dungeon.rendering.GFXLibrary;
-import dungeon.rendering.GraphicsManager;
 
 
 public class Dungeon extends BasicGame
