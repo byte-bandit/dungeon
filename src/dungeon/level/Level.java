@@ -10,8 +10,25 @@ import org.newdawn.slick.geom.Point;
  *
  * @author Kna
  */
+
 public class Level implements DrawableGameComponent
 {
+    
+    private enum FEATURE
+    {
+        ROOM_SQUARE,
+		ROOM_RECT,
+		CORRIDOR,
+    }
+	
+	private enum WALL_DIRECTION
+	{
+		NORTH,
+		EAST,
+		WEST,
+		SOUTH,
+		UNKNOWN
+	}
 	
 	private int width;
 	private int height;
@@ -46,8 +63,11 @@ public class Level implements DrawableGameComponent
 		db.setX(db.getX()+wrk.getPos().getX());
 		db.setY(db.getY()+wrk.getPos().getY());
 		
+		WALL_DIRECTION d = getWallDirection(db);
+		
+		
 		//Decide upon a new feature to build
-		//this just be a 7x5 room
+		FEATURE s = calculateNextFeature();
 		
 		//See if there is room to add the new feature through the chosen wall
 		
@@ -88,6 +108,58 @@ public class Level implements DrawableGameComponent
 	}
 	
 	
+	
+	
+	private WALL_DIRECTION getWallDirection(Point p)
+	{
+		//Test if top is free
+		if(p.getY() > 0)
+		{
+			if(matrice[(int)p.getX()][(int)p.getY()-1] == 1)
+			{
+				//Top piece is part of room
+				//We are on south side of room
+				return WALL_DIRECTION.SOUTH;
+			}
+		}
+		
+		//Test if bottom is free
+		if(p.getY() < this.height)
+		{
+			if(matrice[(int)p.getX()][(int)p.getY()+1] == 1)
+			{
+				//Bottom piece is part of room
+				//We are on Northern side of room
+				return WALL_DIRECTION.NORTH;
+			}
+		}
+		
+		return WALL_DIRECTION.UNKNOWN;
+				
+	}
+	
+	
+	
+	/**
+	 * Will calculate a random feature to build
+	 * @return The Feature to build next
+	 */
+	private FEATURE calculateNextFeature()
+	{
+		switch((int)(Math.random()*FEATURE.values().length))
+		{
+			case 0:
+				return FEATURE.ROOM_RECT;
+				
+			case 1:
+				return FEATURE.ROOM_SQUARE;
+				
+			case 2:
+				return FEATURE.CORRIDOR;
+		}
+		
+		return FEATURE.CORRIDOR;
+	}
 	
 	
 	private void diggRoom(int x, int y, int w, int h)

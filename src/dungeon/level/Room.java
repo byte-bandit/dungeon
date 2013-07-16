@@ -1,7 +1,6 @@
 package dungeon.level;
 
 import dungeon.rendering.DrawableGameComponent;
-import java.util.LinkedList;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Point;
 
